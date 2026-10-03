@@ -1,0 +1,58 @@
+name: Android E2E Screenshot
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  screenshot-welcome:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Build debug APK
+        run: |
+          chmod +x ./gradlew
+          ./gradlew :app:assembleDebug
+
+      - name: Capture welcome screen offline
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          script: |
+            adb install -r app/build/outputs/apk/debug/app-debug.apk
+            adb shell svc wifi disable || true
+            adb shell svc data disable || true
+            adb shell am force-stop com.example.newsapp
+            adb shell am start -n com.example.newsapp/.ui.auth.WelcomeActivity
+            sleep 1
+            mkdir -p screenshots/android
+            adb exec-out screencap -p > screenshots/android/welcome.png
+            test -s screenshots/android/welcome.png
+
+      - name: Commit screenshot to repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add screenshots/android/welcome.png
+          if git diff --cached --quiet; then
+            echo "Screenshot unchanged; nothing to commit."
+            exit 0
+          fi
+          git commit -m "chore: update Android welcome screenshot"
+          git push
