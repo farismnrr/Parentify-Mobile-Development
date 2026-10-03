@@ -7,6 +7,11 @@ on:
       - main
     paths:
       - .github/workflows/android-e2e-screenshot.yml
+      - app/**
+      - build.gradle
+      - settings.gradle
+      - gradle/**
+      - gradle.properties
 
 permissions:
   contents: write
