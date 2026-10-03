@@ -1,12 +1,8 @@
 package com.example.newsapp.ui.detail
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
+import androidx.appcompat.app.AppCompatActivity
 import com.example.newsapp.databinding.ActivityDetailParentifyBinding
-import com.example.newsapp.ui.favorites.FavoritesFragment
-
 
 class DetailParentify : AppCompatActivity() {
 
@@ -22,14 +18,7 @@ class DetailParentify : AppCompatActivity() {
 
     private fun initAboutAction() {
         binding.btnAboutBack.setOnClickListener {
-            back()
+            finish()
         }
-    }
-
-    private fun back() {
-        val intent = Intent(this@DetailParentify, FavoritesFragment::class.java)
-        startActivity(intent)
-
-        finish()
     }
 }

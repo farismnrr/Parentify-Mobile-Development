@@ -1,6 +1,5 @@
 package com.example.newsapp.ui.news
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,26 +9,27 @@ import android.widget.AbsListView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsapp.data.util.Constants.Companion.QUERY_PAGE_SIZE
 import com.example.newsapp.data.util.Constants.Companion.SEARCH_NEWS_TIME_DELAY
 import com.example.newsapp.data.util.Resource
 import com.example.newsapp.databinding.FragmentNewsBinding
-import com.example.newsapp.ui.detection.detail.DetailDetectionActivity
-import dagger.hilt.android.AndroidEntryPoint
+import com.example.newsapp.ui.NewsApplication
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
 class NewsFragment : Fragment() {
 
     private var _binding: FragmentNewsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: NewsViewModel by viewModels()
+    private val viewModel: NewsViewModel by viewModels {
+        NewsViewModel.Factory((requireActivity().application as NewsApplication).articleRepository)
+    }
 
     private lateinit var newsAdapter: NewsAdapter
 
@@ -47,11 +47,9 @@ class NewsFragment : Fragment() {
         _binding = FragmentNewsBinding.inflate(inflater, container, false)
 
         newsAdapter = NewsAdapter { article ->
-            val intent = Intent(requireContext(), DetailDetectionActivity::class.java)
-            startActivity(intent)
-           /* val action =
+            val action =
                 NewsFragmentDirections.actionNavigationNewsToNavigationDetail(article, false)
-            findNavController().navigate(action)*/
+            findNavController().navigate(action)
         }
 
         binding.recyclerView.apply {
@@ -63,14 +61,14 @@ class NewsFragment : Fragment() {
 
         binding.clearSearch.setOnClickListener {
             binding.searchBar.text.clear()
+            viewModel.getAllNewArticles("")
         }
 
         binding.searchBar.addTextChangedListener {
             job?.cancel()
             job = MainScope().launch {
                 delay(SEARCH_NEWS_TIME_DELAY)
-                if (it.toString().isNotEmpty())
-                    viewModel.getAllNewArticles(it.toString())
+                viewModel.getAllNewArticles(it?.toString().orEmpty())
             }
         }
 
@@ -79,7 +77,9 @@ class NewsFragment : Fragment() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { newsResponse ->
-                        newsAdapter.differ.submitList(newsResponse.articles.toList())
+                        val list = newsResponse.articles.toList()
+                        newsAdapter.differ.submitList(list)
+                        binding.llEmptyState.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
                         val totalPages = newsResponse.totalResults / QUERY_PAGE_SIZE + 2
                         isLastPage = viewModel.page == totalPages
                         if (isLastPage) {
@@ -89,15 +89,20 @@ class NewsFragment : Fragment() {
                 }
                 is Resource.Error -> {
                     hideProgressBar()
+                    binding.llEmptyState.visibility = View.VISIBLE
                     response.message?.let { msg ->
                         Log.e("NewsFragment", "Data can't loaded -> $msg")
                     }
                 }
                 is Resource.Loading -> {
                     showProgressBar()
+                    binding.llEmptyState.visibility = View.GONE
                 }
             }
         }
+
+        // Trigger initial load of all articles
+        viewModel.getAllNewArticles("")
 
         return binding.root
     }

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.newsapp.R
 import com.example.newsapp.data.model.Article
 import com.example.newsapp.databinding.NewsItemBinding
 import com.squareup.picasso.Picasso
@@ -18,10 +19,19 @@ class NewsAdapter(private val onItemClicked: (Article) -> Unit) :
         fun bind(article: Article) {
             binding.apply {
                 newsTitle.text = article.title
-                newsText.text = article.content
-                newsSource.text = article.source?.name
-                newsDate.text = article.publishedAt
-                Picasso.get().load(article.urlToImage).into(binding.newsImage)
+                newsText.text = article.description ?: article.content
+                newsSource.text = article.source?.name ?: "Parentify"
+                newsDate.text = article.publishedAt?.take(10) ?: "Hari ini"
+
+                if (!article.urlToImage.isNullOrBlank()) {
+                    Picasso.get()
+                        .load(article.urlToImage)
+                        .placeholder(R.drawable.ic_logo_paren)
+                        .error(R.drawable.ic_logo_paren)
+                        .into(newsImage)
+                } else {
+                    newsImage.setImageResource(R.drawable.ic_logo_paren)
+                }
             }
         }
     }
@@ -50,7 +60,7 @@ class NewsAdapter(private val onItemClicked: (Article) -> Unit) :
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Article>() {
             override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
-                return oldItem == newItem
+                return oldItem.articleId == newItem.articleId || oldItem.url == newItem.url
             }
 
             override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {

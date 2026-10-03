@@ -1,191 +1,322 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/md_theme_background"
+    android:fillViewport="true"
     tools:context="com.example.newsapp.ui.favorites.FavoritesFragment">
 
-    <ImageView
-        android:id="@+id/iv_userProfile"
-        android:layout_width="264dp"
-        android:layout_height="273dp"
-        android:src="@drawable/ic_profile"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.039"
-        tools:ignore="ContentDescription,ImageContrastCheck" />
-
-
-    <TextView
-        android:id="@+id/tv_uname_profil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/tv_username"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4" />
-
-    <TextView
-        android:id="@+id/tv_email_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/nama_gmail_com"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.433" />
-
-    <ImageView
-        android:id="@+id/iv_kotak"
-        android:layout_width="475dp"
-        android:layout_height="386dp"
-        android:src="@drawable/ic_kotak"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="ContentDescription,VisualLintBounds" />
-
     <LinearLayout
-        android:id="@+id/ll_setting"
-        android:padding="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:baselineAligned="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_userProfile"
-        app:layout_constraintVertical_bias="0.248"
-        tools:layout_editor_absoluteX="0dp"
-        tools:ignore="UseCompoundDrawables">
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/spacing_md"
+        android:paddingTop="@dimen/spacing_md"
+        android:paddingBottom="@dimen/spacing_xl">
+
+        <!-- Screen Header -->
+        <TextView
+            style="@style/TextAppearance.Parentify.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profil Bunda"
+            android:textColor="@color/md_theme_primary" />
 
         <TextView
-            android:id="@+id/tv_setting"
-            android:layout_width="0dp"
+            style="@style/TextAppearance.Parentify.BodyMedium"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/txt_setting"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="@dimen/spacing_xxs"
+            android:text="Kelola akun &amp; preferensi pengasuhan si kecil" />
 
-        <ImageView
-            android:id="@+id/iv_next_setting"
-            android:layout_width="44dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_next"
-            tools:ignore="ContentDescription" />
+        <!-- User Profile Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_md"
+            app:cardBackgroundColor="@color/md_theme_surface"
+            app:cardCornerRadius="@dimen/radius_xl"
+            app:cardElevation="@dimen/elevation_low"
+            app:strokeColor="@color/md_theme_outlineVariant"
+            app:strokeWidth="1dp">
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_lg">
 
-    <LinearLayout
-        android:id="@+id/ll_faq"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_setting"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="-65dp"
-        tools:ignore="UseCompoundDrawables">
+                <!-- Avatar Container -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="@dimen/avatar_size_lg"
+                    android:layout_height="@dimen/avatar_size_lg"
+                    app:cardBackgroundColor="@color/md_theme_primaryContainer"
+                    app:cardCornerRadius="@dimen/radius_full"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/md_theme_primary"
+                    app:strokeWidth="2.5dp">
 
+                    <ImageView
+                        android:id="@+id/iv_userProfile"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="Foto Profil Bunda"
+                        android:padding="@dimen/spacing_sm"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_profile"
+                        app:tint="@color/md_theme_primary" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Username -->
+                <TextView
+                    android:id="@+id/tv_uname_profil"
+                    style="@style/TextAppearance.Parentify.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_sm"
+                    android:text="Bunda Sarah" />
+
+                <!-- Email -->
+                <TextView
+                    android:id="@+id/tv_email_profile"
+                    style="@style/TextAppearance.Parentify.BodyMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xxs"
+                    android:text="bunda.sarah@parentify.id" />
+
+                <!-- Badge -->
+                <TextView
+                    style="@style/TextAppearance.Parentify.Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_sm"
+                    android:background="@drawable/ic_box_text"
+                    android:backgroundTint="@color/md_theme_primaryContainer"
+                    android:paddingHorizontal="@dimen/spacing_md"
+                    android:paddingVertical="@dimen/spacing_xs"
+                    android:text="Ibu Hebat Parentify"
+                    android:textColor="@color/md_theme_primary" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Child Info Summary Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            app:cardBackgroundColor="@color/md_theme_surface"
+            app:cardCornerRadius="@dimen/radius_lg"
+            app:cardElevation="@dimen/elevation_low"
+            app:strokeColor="@color/md_theme_outlineVariant"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/spacing_md">
+
+                <ImageView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/ic_box_text"
+                    android:backgroundTint="@color/md_theme_primaryContainer"
+                    android:contentDescription="Data Buah Hati"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_child_care"
+                    app:tint="@color/md_theme_primary" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_md"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextAppearance.Parentify.TitleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Adeeva Kirana (14 Bulan)" />
+
+                    <TextView
+                        style="@style/TextAppearance.Parentify.Label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_xxs"
+                        android:text="Fase: MPASI Tekstur Cincang Kasar"
+                        android:textColor="@color/md_theme_primary" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Menu Section Header -->
         <TextView
-            android:id="@+id/tv_faq"
-            android:layout_width="0dp"
+            style="@style/TextAppearance.Parentify.TitleSmall"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/txt_faq"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="@dimen/spacing_md"
+            android:text="Pusat Informasi &amp; Akun"
+            android:textColor="@color/md_theme_outline" />
 
-        <ImageView
-            android:id="@+id/iv_faq"
-            android:layout_width="44dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_next"
-            tools:ignore="ContentDescription" />
+        <!-- Menu Options Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xs"
+            app:cardBackgroundColor="@color/md_theme_surface"
+            app:cardCornerRadius="@dimen/radius_xl"
+            app:cardElevation="@dimen/elevation_low"
+            app:strokeColor="@color/md_theme_outlineVariant"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Setting Row -->
+                <LinearLayout
+                    android:id="@+id/ll_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/spacing_md">
+
+                    <TextView
+                        android:id="@+id/tv_setting"
+                        style="@style/TextAppearance.Parentify.BodyLarge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Pengaturan Akun Bunda" />
+
+                    <ImageView
+                        android:id="@+id/iv_next_setting"
+                        android:layout_width="@dimen/icon_size_md"
+                        android:layout_height="@dimen/icon_size_md"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_next"
+                        app:tint="@color/md_theme_outline" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="@dimen/spacing_md"
+                    android:background="@color/md_theme_outlineVariant" />
+
+                <!-- FAQ Row -->
+                <LinearLayout
+                    android:id="@+id/ll_faq"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/spacing_md">
+
+                    <TextView
+                        android:id="@+id/tv_faq"
+                        style="@style/TextAppearance.Parentify.BodyLarge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Tanya Jawab (FAQ) Parenting" />
+
+                    <ImageView
+                        android:id="@+id/iv_faq"
+                        android:layout_width="@dimen/icon_size_md"
+                        android:layout_height="@dimen/icon_size_md"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_next"
+                        app:tint="@color/md_theme_outline" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="@dimen/spacing_md"
+                    android:background="@color/md_theme_outlineVariant" />
+
+                <!-- About Row -->
+                <LinearLayout
+                    android:id="@+id/ll_about_apk"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/spacing_md">
+
+                    <TextView
+                        android:id="@+id/tv_about_apk"
+                        style="@style/TextAppearance.Parentify.BodyLarge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Tentang Parentify" />
+
+                    <ImageView
+                        android:id="@+id/iv_next_about_apk"
+                        android:layout_width="@dimen/icon_size_md"
+                        android:layout_height="@dimen/icon_size_md"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_next"
+                        app:tint="@color/md_theme_outline" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="@dimen/spacing_md"
+                    android:background="@color/md_theme_outlineVariant" />
+
+                <!-- Logout Row -->
+                <LinearLayout
+                    android:id="@+id/ll_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/spacing_md">
+
+                    <TextView
+                        android:id="@+id/tv_logout"
+                        style="@style/TextAppearance.Parentify.BodyLarge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Keluar dari Akun"
+                        android:textColor="@color/md_theme_error" />
+
+                    <ImageView
+                        android:id="@+id/iv_next_logout"
+                        android:layout_width="@dimen/icon_size_md"
+                        android:layout_height="@dimen/icon_size_md"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_next"
+                        app:tint="@color/md_theme_error" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_about_apk"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_faq"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="16dp"
-        tools:ignore="UseCompoundDrawables">
-
-        <TextView
-            android:id="@+id/tv_about_apk"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/txt_about_parentify"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="466dp" />
-
-        <ImageView
-            android:id="@+id/iv_next_about_apk"
-            android:layout_width="44dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_next"
-            tools:ignore="ContentDescription" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_logout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_about_apk"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="16dp"
-        tools:ignore="UseCompoundDrawables">
-
-        <TextView
-            android:id="@+id/tv_logout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/txt_logout_profile"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/iv_next_logout"
-            android:layout_width="44dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_next"
-            tools:ignore="ContentDescription" />
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,22 +1,47 @@
 package com.example.newsapp.data.repository
 
 import com.example.newsapp.data.local.ArticleDatabase
+import com.example.newsapp.data.mock.MockData
 import com.example.newsapp.data.model.Article
-import com.example.newsapp.data.remote.NewsApi
-import com.example.newsapp.data.util.Constants.Companion.API_KEY
-import javax.inject.Inject
+import com.example.newsapp.data.model.News
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
+import retrofit2.Response
 
-class ArticleRepository @Inject constructor(
+class ArticleRepository(
     private val database: ArticleDatabase,
-    private val newsApi: NewsApi,
 ) {
 
-    suspend fun getAllArticles(searchQuery: String, pageNumber: Int) =
-        newsApi.getNews(searchQuery, pageNumber, API_KEY)
+    suspend fun getAllArticles(searchQuery: String, pageNumber: Int): Response<News> {
+        delay(100)
+        val query = searchQuery.trim()
+        val filtered = if (query.isEmpty() || query.equals("Kids", ignoreCase = true)) {
+            MockData.articles
+        } else {
+            MockData.articles.filter {
+                (it.title?.contains(query, ignoreCase = true) == true) ||
+                (it.description?.contains(query, ignoreCase = true) == true) ||
+                (it.content?.contains(query, ignoreCase = true) == true) ||
+                (it.author?.contains(query, ignoreCase = true) == true)
+            }.toMutableList()
+        }
+
+        val news = News(
+            articles = filtered.toMutableList(),
+            status = "ok",
+            totalResults = filtered.size
+        )
+        return Response.success(news)
+    }
 
     fun getFavoriteArticles() = database.articleDao().getArticles()
 
-    suspend fun insert(article: Article) = database.articleDao().insertArticle(article)
+    suspend fun insert(article: Article) = withContext(Dispatchers.IO) {
+        database.articleDao().insertArticle(article)
+    }
 
-    suspend fun deleteArticle(article: Article) = database.articleDao().deleteArticle(article)
+    suspend fun deleteArticle(article: Article) = withContext(Dispatchers.IO) {
+        database.articleDao().deleteArticle(article)
+    }
 }

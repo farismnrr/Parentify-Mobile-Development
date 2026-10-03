@@ -2,31 +2,31 @@ package com.example.newsapp.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.newsapp.data.model.UserRequest
-import com.example.newsapp.data.model.UserResponse
-import com.example.newsapp.data.remote.apiKey
-import com.example.newsapp.data.remote.userApiService
 import com.example.newsapp.databinding.ActivityRegisterBinding
 import com.example.newsapp.ui.MainActivity
-import com.google.gson.JsonParser
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
 
     companion object {
         var refreshToken: String? = null
+        const val DUMMY_UNAME = "Bunda Sarah"
+        const val DUMMY_EMAIL = "bunda.sarah@parentify.id"
+        const val DUMMY_PASS = "bunda123"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Pre-fill dummy credentials so the user can register/enter with one tap
+        binding.registerUname.setText(DUMMY_UNAME)
+        binding.registerEmail.setText(DUMMY_EMAIL)
+        binding.registerPassword.setText(DUMMY_PASS)
+        binding.registerConfirmPassword.setText(DUMMY_PASS)
 
         initRegisterAction()
     }
@@ -47,57 +47,27 @@ class RegisterActivity : AppCompatActivity() {
         val password = binding.registerPassword.text.toString().trim()
         val confirmPassword = binding.registerConfirmPassword.text.toString().trim()
 
-
-        if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+        if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            Toast.makeText(this, "Harap lengkapi semua kolom pendaftaran", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val userRequest = UserRequest()
-        userRequest.username = username
-        userRequest.email = email
-        userRequest.password = password
-        userRequest.confirmPassword = confirmPassword
-
-        userApiService.register(userRequest, apiKey).enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                if (response.isSuccessful) {
-                    val users = response.body()
-                    Log.d("Email", users?.data?.email.toString())
-                    Log.d("Username", users?.data?.username.toString())
-                    Log.d("Token", users?.data?.refreshToken.toString())
-                    LoginActivity.refreshToken = users?.data?.refreshToken
-
-                    val intent = Intent(this@RegisterActivity, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    val errorBody = response.errorBody()?.string()
-                    val errorMessage = parseErrorMessage(errorBody)
-                    Toast.makeText(this@RegisterActivity, errorMessage, Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                Log.e("Error", t.message.toString())
-                Toast.makeText(this@RegisterActivity, "Registration failed. Please try again later.", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    private fun parseErrorMessage(errorBody: String?): String {
-        return try {
-            val json = JsonParser.parseString(errorBody).asJsonObject
-            json.getAsJsonPrimitive("Message").asString
-        } catch (e: Exception) {
-            errorBody ?: "Unknown error"
+        if (password != confirmPassword) {
+            Toast.makeText(this, "Konfirmasi kata sandi tidak cocok", Toast.LENGTH_SHORT).show()
+            return
         }
+
+        LoginActivity.refreshToken = "mock-token-registered"
+        Toast.makeText(this, "Pendaftaran berhasil! Selamat datang, $username", Toast.LENGTH_SHORT).show()
+
+        val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun login() {
         val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
         startActivity(intent)
-
         finish()
     }
 }

@@ -2,6 +2,7 @@ package com.example.newsapp.ui.news
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -11,11 +12,8 @@ import com.example.newsapp.data.repository.ArticleRepository
 import com.example.newsapp.data.util.Constants.Companion.DEFAULT_TOPIC
 import com.example.newsapp.data.util.Constants.Companion.STARTING_PAGE_INDEX
 import com.example.newsapp.data.util.Resource
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class NewsViewModel @Inject constructor(private val articleRepository: ArticleRepository) : ViewModel() {
+class NewsViewModel(private val articleRepository: ArticleRepository) : ViewModel() {
 
     val articles: MutableLiveData<Resource<News>> = MutableLiveData()
     private var newsResponse: News? = null
@@ -71,5 +69,15 @@ class NewsViewModel @Inject constructor(private val articleRepository: ArticleRe
 
     fun removeArticleFromFavorites(article: Article) = viewModelScope.launch {
         articleRepository.deleteArticle(article)
+    }
+
+    class Factory(private val articleRepository: ArticleRepository) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(NewsViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return NewsViewModel(articleRepository) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class")
+        }
     }
 }

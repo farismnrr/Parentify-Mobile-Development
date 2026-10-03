@@ -1,35 +1,26 @@
 package com.example.newsapp.ui.detection.detail
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.newsapp.data.model.food.FoodResponse
-import com.example.newsapp.data.remote.apiKey
-import com.example.newsapp.data.remote.foodApiService
+import com.example.newsapp.R
+import com.example.newsapp.data.mock.MockData
 import com.example.newsapp.databinding.ActivityDetailDetectionBinding
 import com.squareup.picasso.Picasso
-import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-@AndroidEntryPoint
 class DetailDetectionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailDetectionBinding
-
     private var listAdapter: DetailDetectionAdapter = DetailDetectionAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailDetectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        supportActionBar?.hide()
 
-        val nameFood = intent.getStringExtra(ARGS_TITLE).toString()
+        val nameFood = intent.getStringExtra(ARGS_TITLE) ?: "sup"
 
-        with(binding){
+        with(binding) {
             back.setOnClickListener {
                 onBackPressedDispatcher.onBackPressed()
             }
@@ -38,32 +29,54 @@ class DetailDetectionActivity : AppCompatActivity() {
                 adapter = listAdapter
             }
 
+            btnSaveToLog.setOnClickListener {
+                Toast.makeText(
+                    this@DetailDetectionActivity,
+                    "✓ Menu hidangan berhasil dicatat ke Jurnal Gizi Anak!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                finish()
+            }
+
+            btnShareDetection.setOnClickListener {
+                shareDetectionResult()
+            }
         }
 
-        val stringWithoutSpaces = nameFood.replace(" ", "")
-
-        getDetailFood(stringWithoutSpaces)
-
+        getDetailFood(nameFood)
     }
 
-    private fun getDetailFood(keyword: String){
-        foodApiService.getFoodDetail(keyword, apiKey).enqueue(object : Callback<List<FoodResponse>>{
-            override fun onResponse(
-                call: Call<List<FoodResponse>>,
-                response: Response<List<FoodResponse>>
-            ) {
-                val dataResponse = response.body()?.first()
-                binding.dataItemBind = dataResponse
+    private fun getDetailFood(keyword: String) {
+        val dataResponse = MockData.getFoodDetail(keyword)
+        binding.dataItemBind = dataResponse
+        listAdapter.submitList(dataResponse.data)
 
-                listAdapter.submitList(dataResponse?.data)
-                Picasso.get().load(dataResponse?.img).into(binding.ivFood)
-            }
+        if (!dataResponse.img.isNullOrBlank()) {
+            Picasso.get()
+                .load(dataResponse.img)
+                .placeholder(R.drawable.ic_logo_paren)
+                .error(R.drawable.ic_logo_paren)
+                .into(binding.ivFood)
+        } else {
+            binding.ivFood.setImageResource(R.drawable.ic_logo_paren)
+        }
+    }
 
-            override fun onFailure(call: Call<List<FoodResponse>>, t: Throwable) {
-                Toast.makeText(this@DetailDetectionActivity, "Failed Get Data Food", Toast.LENGTH_SHORT).show()
-            }
-
-        })
+    private fun shareDetectionResult() {
+        val food = binding.dataItemBind
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(
+                Intent.EXTRA_TEXT,
+                "🍲 *Laporan Analisis Gizi Parentify AI*\n\n" +
+                        "Menu: ${food?.name ?: "Hidangan Sehat Balita"}\n" +
+                        "Kategori: ${food?.type ?: "Gizi Seimbang"}\n" +
+                        "${food?.nutrition ?: ""}\n\n" +
+                        "Dianalisis menggunakan Parentify - Sahabat Tumbuh Kembang Buah Hati."
+            )
+            type = "text/plain"
+        }
+        startActivity(Intent.createChooser(sendIntent, "Bagikan Hasil Analisis Nutrisi"))
     }
 
     companion object {

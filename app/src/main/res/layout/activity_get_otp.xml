@@ -4,115 +4,141 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@color/light"
-    tools:context="com.example.myapplication.detail.GetOTP">
+    android:background="@color/md_theme_background"
+    tools:context="com.example.newsapp.ui.detail.GetOTP">
 
-    <ImageView
-        android:id="@+id/iv_send_msg"
-        android:layout_width="320dp"
-        android:layout_height="308dp"
-        android:src="@drawable/ic_send_msg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.096"
-        tools:ignore="ContentDescription" />
-
-    <TextView
-        android:id="@+id/tv_get_otp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/coolvetica"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:text="@string/txt_otp_verification"
-        android:textSize="35sp"
-        app:layout_constraintTop_toBottomOf="@id/iv_send_msg"
-        tools:layout_editor_absoluteX="53dp" />
-
-    <TextView
-        android:id="@+id/tv_info_otp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Kami akan mengirimkan kode OTP ke nomor handphone mu"
-        android:textColor="@color/grey"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/tv_get_otp"
-        tools:ignore="TextContrastCheck"
-        tools:layout_editor_absoluteX="16dp" />
-
-    <TextView
-        android:id="@+id/tv_enter_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/teacher"
-        android:gravity="center"
-        android:text="Masukkan nomor telepon"
-        android:textColor="@color/grey"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_info_otp"
-        app:layout_constraintVertical_bias="0.138"
-        tools:ignore="TextContrastCheck"
-        tools:layout_editor_absoluteX="16dp" />
-
-    <EditText
-        android:id="@+id/et_no_telp"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/_08xxxxxx"
-        android:inputType="number"
-        android:minHeight="48dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_enter_number"
-        app:layout_constraintVertical_bias="0.042"
-        tools:ignore="Autofill,DuplicateSpeakableTextCheck,LabelFor,TextContrastCheck" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <!-- Top Navigation Bar -->
+    <LinearLayout
+        android:id="@+id/ll_top_bar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/spacing_sm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_no_telp"
-        tools:ignore="VisualLintButtonSize">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/btn_otp_back"
-            android:layout_width="382dp"
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:cardBackgroundColor="@color/md_theme_surface"
+            app:cardCornerRadius="@dimen/radius_full"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/md_theme_outlineVariant"
+            app:strokeWidth="1dp">
+
+            <ImageView
+                android:id="@+id/btn_otp_back"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="Kembali"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_arrow_back_24dp"
+                app:tint="@color/md_theme_onSurface" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            style="@style/TextAppearance.Parentify.Title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/black"
-            android:text="@string/back"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginStart="@dimen/spacing_xs"
+            android:text="Kirim Kode OTP" />
+    </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_get_otp"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_top_bar">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="52dp"
-            android:backgroundTint="@color/black"
-            android:text="@string/txt_btn_get_otp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.437"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_no_telp"
-            app:layout_constraintVertical_bias="0.26"
-            tools:ignore="VisualLintButtonSize" />
-    </FrameLayout>
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/spacing_md"
+            android:paddingTop="@dimen/spacing_md"
+            android:paddingBottom="@dimen/spacing_xl">
 
+            <ImageView
+                android:id="@+id/iv_send_msg"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_send_msg" />
+
+            <TextView
+                style="@style/TextAppearance.Parentify.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:text="@string/txt_otp_verification"
+                android:textColor="@color/md_theme_primary" />
+
+            <TextView
+                style="@style/TextAppearance.Parentify.BodyMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxs"
+                android:text="Kami akan mengirimkan 6 digit kode OTP ke nomor handphone Anda"
+                android:textAlignment="center" />
+
+            <!-- Input Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_lg"
+                app:cardBackgroundColor="@color/md_theme_surface"
+                app:cardCornerRadius="@dimen/radius_lg"
+                app:cardElevation="@dimen/elevation_low"
+                app:strokeColor="@color/md_theme_outlineVariant"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_lg">
+
+                    <TextView
+                        style="@style/TextAppearance.Parentify.Label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nomor Handphone"
+                        android:textColor="@color/md_theme_onSurface" />
+
+                    <EditText
+                        android:id="@+id/et_no_telp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/input_height_md"
+                        android:layout_marginTop="@dimen/spacing_xs"
+                        android:background="@drawable/ic_box_text"
+                        android:hint="Contoh: 08123456789"
+                        android:inputType="phone"
+                        android:paddingHorizontal="@dimen/spacing_md"
+                        android:textColor="@color/md_theme_onSurface"
+                        android:textColorHint="@color/md_theme_outline"
+                        android:textSize="@dimen/text_body_lg" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_get_otp"
+                        style="@style/Widget.Parentify.Button.Primary"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_height_md"
+                        android:layout_marginTop="@dimen/spacing_lg"
+                        android:text="Kirim Kode OTP" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

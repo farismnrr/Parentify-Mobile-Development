@@ -11,9 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.newsapp.databinding.FragmentArticleWebViewBinding
 
-import dagger.hilt.android.AndroidEntryPoint
-
-@AndroidEntryPoint
 class ArticleWebViewFragment : Fragment() {
 
     private var _binding: FragmentArticleWebViewBinding? = null

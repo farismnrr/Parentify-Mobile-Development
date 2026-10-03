@@ -1,4 +1,4 @@
-name: Android UI Screenshot
+name: Android E2E Screenshot
 
 on:
   workflow_dispatch:
@@ -19,7 +19,7 @@ permissions:
 jobs:
   screenshot-welcome:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
 
     steps:
       - name: Checkout
@@ -32,32 +32,28 @@ jobs:
           java-version: '17'
           cache: gradle
 
-      - name: Record welcome screenshot without emulator
+      - name: Build debug APK
         run: |
           chmod +x ./gradlew
-          rm -rf app/src/test/snapshots
-          ./gradlew :app:recordPaparazziDebug --tests com.example.newsapp.WelcomeScreenshotTest
+          ./gradlew :app:assembleDebug
 
-      - name: Copy screenshot to repository folder
-        run: |
-          mkdir -p screenshots/android
-          snapshot="$(find app/src/test/snapshots -type f -name '*.png' -print -quit)"
-          if [ -z "$snapshot" ]; then
-            echo "No Paparazzi PNG was generated."
-            exit 1
-          fi
-          cp "$snapshot" screenshots/android/welcome.png
-          test -s screenshots/android/welcome.png
-          file screenshots/android/welcome.png
-          echo "Generated screenshot: $snapshot"
-
-      - name: Upload screenshot artifact
-        uses: actions/upload-artifact@v4
+      - name: Capture welcome screen offline
+        uses: reactivecircus/android-emulator-runner@v2
         with:
-          name: parentify-welcome-screenshot
-          path: screenshots/android/welcome.png
-          if-no-files-found: error
-          retention-days: 1
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          script: |
+            adb install -r app/build/outputs/apk/debug/app-debug.apk
+            adb shell svc wifi disable || true
+            adb shell svc data disable || true
+            adb shell am force-stop com.example.newsapp
+            adb shell am start -n com.example.newsapp/.ui.auth.WelcomeActivity
+            sleep 1
+            mkdir -p screenshots/android
+            adb exec-out screencap -p > screenshots/android/welcome.png
+            test -s screenshots/android/welcome.png
 
       - name: Commit screenshot to repository
         run: |

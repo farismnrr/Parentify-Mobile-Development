@@ -4,30 +4,204 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.myapplication.detail.DetailFAQ">
+    android:background="@color/md_theme_background"
+    tools:context="com.example.newsapp.ui.detail.DetailFAQ">
 
-    <Button
-        android:id="@+id/btn_faq_back"
-        android:layout_width="382dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/black"
-        android:text="BACK"
+    <!-- Top Bar -->
+    <LinearLayout
+        android:id="@+id/ll_top_bar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/spacing_sm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:cardBackgroundColor="@color/md_theme_surface"
+            app:cardCornerRadius="@dimen/radius_full"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/md_theme_outlineVariant"
+            app:strokeWidth="1dp">
+
+            <ImageView
+                android:id="@+id/btn_faq_back"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="Kembali"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_arrow_back_24dp"
+                app:tint="@color/md_theme_onSurface" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            style="@style/TextAppearance.Parentify.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xs"
+            android:text="Tanya Jawab (FAQ)" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.551"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.901"
-        tools:ignore="VisualLintButtonSize" />
+        app:layout_constraintTop_toBottomOf="@id/ll_top_bar">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="365dp"
-        android:layout_height="582dp"
-        android:text="Apa itu Parentify?\n\n
-Parentify adalah aplikasi pendamping orang tua yang menyediakan informasi dan panduan seputar parenting. Aplikasi ini dapat membantu orang tua untuk membesarkan anak dengan lebih baik, mulai dari perawatan harian, stimulasi perkembangan, hingga mengatasi masalah perilaku anak.
-"
-        tools:layout_editor_absoluteX="26dp"
-        tools:layout_editor_absoluteY="16dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/spacing_md"
+            android:paddingTop="@dimen/spacing_sm"
+            android:paddingBottom="@dimen/spacing_xl">
+
+            <!-- FAQ Card 1 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_sm"
+                app:cardBackgroundColor="@color/md_theme_surface"
+                app:cardCornerRadius="@dimen/radius_md"
+                app:cardElevation="@dimen/elevation_low"
+                app:strokeColor="@color/md_theme_outlineVariant"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_md">
+
+                    <TextView
+                        style="@style/TextAppearance.Parentify.TitleSmall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Apa itu Parentify?"
+                        android:textColor="@color/md_theme_primary" />
+
+                    <TextView
+                        style="@style/TextAppearance.Parentify.BodyMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_xs"
+                        android:lineSpacingMultiplier="1.25"
+                        android:text="Parentify adalah aplikasi pendamping orang tua cerdas yang menyediakan informasi panduan pengasuhan, stimulasi tumbuh kembang anak, dan analisis nutrisi makanan balita untuk mencegah stunting sejak dini." />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- FAQ Card 2 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_sm"
+                app:cardBackgroundColor="@color/md_theme_surface"
+                app:cardCornerRadius="@dimen/radius_md"
+                app:cardElevation="@dimen/elevation_low"
+                app:strokeColor="@color/md_theme_outlineVariant"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_md">
+
+                    <TextView
+                        style="@style/TextAppearance.Parentify.TitleSmall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Bagaimana fitur Deteksi Makanan bekerja?"
+                        android:textColor="@color/md_theme_primary" />
+
+                    <TextView
+                        style="@style/TextAppearance.Parentify.BodyMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_xs"
+                        android:lineSpacingMultiplier="1.25"
+                        android:text="Cukup arahkan kamera ke hidangan makanan anak atau menu MPASI. Sistem akan menganalisis komposisi nutrisi, kadar protein, serat, dan merekomendasikan tekstur yang pas sesuai tahap usia balita." />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- FAQ Card 3 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_sm"
+                app:cardBackgroundColor="@color/md_theme_surface"
+                app:cardCornerRadius="@dimen/radius_md"
+                app:cardElevation="@dimen/elevation_low"
+                app:strokeColor="@color/md_theme_outlineVariant"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_md">
+
+                    <TextView
+                        style="@style/TextAppearance.Parentify.TitleSmall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Apakah artikel dapat disimpan offline?"
+                        android:textColor="@color/md_theme_primary" />
+
+                    <TextView
+                        style="@style/TextAppearance.Parentify.BodyMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_xs"
+                        android:lineSpacingMultiplier="1.25"
+                        android:text="Ya! Anda dapat menyimpan artikel favorit untuk dibaca kapan saja langsung dari database lokal aplikasi secara cepat tanpa kuota." />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- FAQ Card 4 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/md_theme_surface"
+                app:cardCornerRadius="@dimen/radius_md"
+                app:cardElevation="@dimen/elevation_low"
+                app:strokeColor="@color/md_theme_outlineVariant"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_md">
+
+                    <TextView
+                        style="@style/TextAppearance.Parentify.TitleSmall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Apakah panduan nutrisi sesuai rekomendasi dokter?"
+                        android:textColor="@color/md_theme_primary" />
+
+                    <TextView
+                        style="@style/TextAppearance.Parentify.BodyMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_xs"
+                        android:lineSpacingMultiplier="1.25"
+                        android:text="Semua referensi gizi dan milestone pengasuhan disarikan dari pedoman Ikatan Dokter Anak Indonesia (IDAI) dan Kementerian Kesehatan RI." />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,85 +1,402 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="dataItemBind"
             type="com.example.newsapp.data.model.food.FoodResponse" />
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
+        android:background="@color/md_theme_background"
         tools:context=".ui.detection.detail.DetailDetectionActivity">
 
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:importantForAccessibility="no"
-            app:srcCompat="@drawable/ic_arrow_left_circle" />
+        <!-- Top App Bar Navigation -->
+        <LinearLayout
+            android:id="@+id/ll_top_bar"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/spacing_md"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="match_parent"
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:cardBackgroundColor="@color/md_theme_surface"
+                app:cardCornerRadius="@dimen/radius_full"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/md_theme_outlineVariant"
+                app:strokeWidth="1dp">
+
+                <ImageView
+                    android:id="@+id/back"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="Kembali"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_arrow_back_24dp"
+                    app:tint="@color/md_theme_onSurface" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                style="@style/TextAppearance.Parentify.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_sm"
+                android:layout_weight="1"
+                android:text="Hasil Analisis Nutrisi"
+                android:textColor="@color/md_theme_onSurface" />
+
+            <!-- Share Action -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:cardBackgroundColor="@color/md_theme_surface"
+                app:cardCornerRadius="@dimen/radius_full"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/md_theme_outlineVariant"
+                app:strokeWidth="1dp">
+
+                <ImageView
+                    android:id="@+id/btn_share_detection"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="Bagikan Hasil"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_share"
+                    app:tint="@color/md_theme_onSurface" />
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <!-- Scrollable Content -->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_action_card"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_top_bar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/spacing_md"
+                android:paddingBottom="@dimen/spacing_xl">
+
+                <!-- Food Image Card with AI Match Overlay -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_marginTop="@dimen/spacing_xs"
+                    app:cardCornerRadius="@dimen/radius_xl"
+                    app:cardElevation="@dimen/elevation_low"
+                    app:strokeColor="@color/md_theme_outlineVariant"
+                    app:strokeWidth="1dp">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/ivFood"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="Foto Makanan"
+                            android:scaleType="centerCrop" />
+
+                        <!-- Top AI Verification Chip -->
+                        <TextView
+                            style="@style/TextAppearance.Parentify.Label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/spacing_sm"
+                            android:background="@drawable/ic_box_text"
+                            android:backgroundTint="#CC1F1A1C"
+                            android:paddingHorizontal="@dimen/spacing_sm"
+                            android:paddingVertical="4dp"
+                            android:text="✓ Terverifikasi AI NutriScan • 98.4%"
+                            android:textColor="@color/white"
+                            android:textSize="11.5sp" />
+                    </FrameLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Food Title -->
+                <TextView
+                    style="@style/TextAppearance.Parentify.Headline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_md"
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="@{dataItemBind.name}"
+                    android:textColor="#1F1A1C"
+                    android:textSize="21sp"
+                    tools:text="Sup Ayam Wortel Kentang Hangat" />
+
+                <!-- Category Pill -->
+                <TextView
+                    style="@style/TextAppearance.Parentify.Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/ic_box_text"
+                    android:backgroundTint="@color/md_theme_primaryContainer"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:text="@{dataItemBind.type}"
+                    android:textColor="@color/md_theme_primary"
+                    android:textStyle="bold"
+                    tools:text="Sayur &amp; Kaldu Bugar Kaya Elektrolit" />
+
+                <!-- Description Text (Editorial Clean Flow) -->
+                <TextView
+                    style="@style/TextAppearance.Parentify.BodyLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_sm"
+                    android:lineSpacingMultiplier="1.4"
+                    android:text="@{dataItemBind.description}"
+                    android:textColor="#3D3538"
+                    android:textSize="14sp"
+                    tools:text="Sup hangat berkuah kaldu ayam kampung dengan irisan kentang empuk, wortel manis, dan jagung manis yang ramah pencernaan anak." />
+
+                <!-- Macronutrient Dashboard Card -->
+                <TextView
+                    style="@style/TextAppearance.Parentify.TitleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_lg"
+                    android:text="Komposisi Gizi &amp; Makronutrisi"
+                    android:textColor="@color/md_theme_onSurface" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xs"
+                    app:cardBackgroundColor="@color/md_theme_surface"
+                    app:cardCornerRadius="@dimen/radius_lg"
+                    app:cardElevation="@dimen/elevation_low"
+                    app:strokeColor="@color/md_theme_outlineVariant"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="@dimen/spacing_md">
+
+                        <!-- Stat 1: Kalori -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/TextAppearance.Parentify.Headline"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="180"
+                                android:textColor="@color/md_theme_primary"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                style="@style/TextAppearance.Parentify.Label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Kalori (kkal)"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                        <!-- Stat 2: Protein -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/TextAppearance.Parentify.Headline"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="14g"
+                                android:textColor="#2E7D32"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                style="@style/TextAppearance.Parentify.Label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Protein"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                        <!-- Stat 3: Lemak -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/TextAppearance.Parentify.Headline"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="5g"
+                                android:textColor="#E65100"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                style="@style/TextAppearance.Parentify.Label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Lemak Sehat"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                        <!-- Stat 4: Karbo -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/TextAppearance.Parentify.Headline"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="20g"
+                                android:textColor="#0277BD"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                style="@style/TextAppearance.Parentify.Label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Karbohidrat"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Pediatric Safety & Texture Recommendation Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_md"
+                    app:cardBackgroundColor="@color/md_theme_primaryContainer"
+                    app:cardCornerRadius="@dimen/radius_lg"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_md">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_child_care"
+                                app:tint="@color/md_theme_primary" />
+
+                            <TextView
+                                style="@style/TextAppearance.Parentify.TitleSmall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:text="Evaluasi Dokter Anak &amp; Ahli Gizi"
+                                android:textColor="@color/md_theme_primary" />
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/TextAppearance.Parentify.BodyMedium"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:lineSpacingMultiplier="1.25"
+                            android:text="• Rekomendasi Usia: Balita 1–3 Tahun &amp; Bayi MPASI\n• Evaluasi Tekstur: Kuah lembut, serat sayur empuk, aman ditelan tanpa risiko tersedak.\n• Status Alergen: Bebas kacang &amp; produk gluten berbahaya."
+                            android:textColor="#3D3538"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Benefits List Section -->
+                <TextView
+                    style="@style/TextAppearance.Parentify.TitleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_lg"
+                    android:text="Rincian Manfaat &amp; Nutrisi Unggulan"
+                    android:textColor="@color/md_theme_onSurface" />
+
+                <!-- RecyclerView List -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xs"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/layout_detail_detection_item" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <!-- Bottom Action Bar / Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bottom_action_card"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@{dataItemBind.name}"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Daging Sapi" />
+            app:cardBackgroundColor="@color/md_theme_surface"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="@dimen/elevation_medium"
+            app:strokeColor="@color/md_theme_outlineVariant"
+            app:strokeWidth="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/ivFood"
-            android:layout_width="200dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_save_to_log"
+                style="@style/Widget.Parentify.Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height_md"
+                android:layout_marginHorizontal="@dimen/spacing_md"
+                android:layout_marginVertical="@dimen/spacing_sm"
+                android:text="Simpan ke Jurnal Makan Si Kecil"
+                app:icon="@drawable/ic_check_circle_24"
+                app:iconGravity="textStart"
+                app:iconTint="@color/md_theme_onPrimary" />
+        </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="@{dataItemBind.description}"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Daging Sapi adalah sumber protein berkualitas tinggi dengan kandungan nutrisi yang meliputi Protein, Lemak, Natrium, Fosfor, Kalsium, Vitamin C, Vitamin B6, Magnesium, Zinc, Kalium, dan Zat Besi. Daging Sapi cocok untuk dikonsumsi pada berbagai tahap perkembangan bayi, mulai dari 6 hingga 23 bulan." />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="GIZI"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@{dataItemBind.nutrition}"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Protein, Lemak, Natrium, Fosfor, Kalsium, Vitamin C, Vitamin B6, Magnesium, Zinc, Kalium, dan Zat Besi." />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/layout_detail_detection_item" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

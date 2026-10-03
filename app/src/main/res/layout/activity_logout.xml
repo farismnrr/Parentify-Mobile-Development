@@ -1,15 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/md_theme_background"
+    android:padding="@dimen/spacing_lg">
 
-    <Button
-        android:id="@+id/btn_logout"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_centerInParent="true"
-        android:text="@string/log_out"
-        tools:ignore="VisualLintButtonSize,TextContrastCheck" />
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxWidth="@dimen/max_content_width"
+        app:cardBackgroundColor="@color/md_theme_surface"
+        app:cardCornerRadius="@dimen/radius_xl"
+        app:cardElevation="@dimen/elevation_medium"
+        app:strokeColor="@color/md_theme_outlineVariant"
+        app:strokeWidth="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_xl">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                app:cardBackgroundColor="@color/md_theme_errorContainer"
+                app:cardCornerRadius="@dimen/radius_full"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@null"
+                    android:padding="@dimen/spacing_md"
+                    android:src="@drawable/ic_close"
+                    app:tint="@color/md_theme_onErrorContainer" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                style="@style/TextAppearance.Parentify.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:text="Keluar dari Akun?"
+                android:textAlignment="center" />
+
+            <TextView
+                style="@style/TextAppearance.Parentify.BodyMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xs"
+                android:text="Anda harus masuk kembali untuk mengakses pengaturan dan sinkronisasi preferensi."
+                android:textAlignment="center" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_logout"
+                style="@style/Widget.Parentify.Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height_md"
+                android:layout_marginTop="@dimen/spacing_lg"
+                android:backgroundTint="@color/md_theme_error"
+                android:text="@string/log_out"
+                android:textColor="@color/md_theme_onError" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel_logout"
+                style="@style/Widget.Parentify.Button.Outlined"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height_md"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:text="Batal" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

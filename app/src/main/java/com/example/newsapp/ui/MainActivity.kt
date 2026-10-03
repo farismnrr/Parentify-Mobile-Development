@@ -1,21 +1,14 @@
 package com.example.newsapp.ui
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.example.newsapp.R
 import com.example.newsapp.databinding.ActivityMainBinding
-import dagger.hilt.android.AndroidEntryPoint
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -32,19 +25,11 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
-        val navController = navHostFragment.navController
-
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.navigation_news, R.id.navigation_camera, R.id.navigation_favorites)
-        )
-
-
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        navController = navHostFragment.navController
         navView.setupWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }
