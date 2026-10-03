@@ -2,6 +2,11 @@ name: Android E2E Screenshot
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/android-e2e-screenshot.yml
 
 permissions:
   contents: write
