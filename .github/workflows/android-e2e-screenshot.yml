@@ -1,4 +1,4 @@
-name: Android E2E Screenshot
+name: Android UI Screenshot
 
 on:
   workflow_dispatch:
@@ -19,7 +19,7 @@ permissions:
 jobs:
   screenshot-welcome:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
 
     steps:
       - name: Checkout
@@ -32,28 +32,24 @@ jobs:
           java-version: '17'
           cache: gradle
 
-      - name: Build debug APK
+      - name: Record welcome screenshot without emulator
         run: |
           chmod +x ./gradlew
-          ./gradlew :app:assembleDebug
+          rm -rf app/src/test/snapshots
+          ./gradlew :app:recordPaparazziDebug --tests com.example.newsapp.WelcomeScreenshotTest
 
-      - name: Capture welcome screen offline
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 34
-          arch: x86_64
-          target: google_apis
-          disable-animations: true
-          script: |
-            adb install -r app/build/outputs/apk/debug/app-debug.apk
-            adb shell svc wifi disable || true
-            adb shell svc data disable || true
-            adb shell am force-stop com.example.newsapp
-            adb shell am start -n com.example.newsapp/.ui.auth.WelcomeActivity
-            sleep 1
-            mkdir -p screenshots/android
-            adb exec-out screencap -p > screenshots/android/welcome.png
-            test -s screenshots/android/welcome.png
+      - name: Copy screenshot to repository folder
+        run: |
+          mkdir -p screenshots/android
+          snapshot="$(find app/src/test/snapshots -type f -name '*.png' -print -quit)"
+          if [ -z "$snapshot" ]; then
+            echo "No Paparazzi PNG was generated."
+            exit 1
+          fi
+          cp "$snapshot" screenshots/android/welcome.png
+          test -s screenshots/android/welcome.png
+          file screenshots/android/welcome.png
+          echo "Generated screenshot: $snapshot"
 
       - name: Commit screenshot to repository
         run: |
